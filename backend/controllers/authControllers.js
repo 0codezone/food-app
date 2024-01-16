@@ -5,10 +5,10 @@ import userModel from "../models/userModel.js";
 // @desc    REGISTER a new user || POST /api/auth/register
 export const registerController = async (req, res) => {
   try {
-    const { username, email, password, address, phone } = req.body;
+    const { username, email, password, address, phone, answer } = req.body;
 
     //validation
-    if (!username || !email || !password || !phone) {
+    if (!username || !email || !password || !phone || !answer) {
       return res.status(400).json({
         success: false,
         message: "All fields are required",
@@ -38,6 +38,7 @@ export const registerController = async (req, res) => {
       password: hashedPassword,
       address,
       phone,
+      answer,
     });
     newUser.save();
 

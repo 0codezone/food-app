@@ -94,7 +94,47 @@ export const updateUserController = async (req, res) => {
   }
 };
 
-// @desc delete user || DELETE /api/v1/user/:id
+//@desc reset user password  || put  /api/v1/user/resetPassword
+export const resetPasswordController = async (req, res) => {
+  try {
+    const { email, newPassword, answer } = req.body;
+    if (!email || !newPassword || !answer) {
+      return res.status(500).json({
+        success: false,
+        message: "please provide all required fields",
+      });
+    }
+    const user = await userModel.findOne({ email, answer });
+    if (!user) {
+      return res.status(500).json({
+        success: false,
+        message: "user not found or invalid answer",
+      });
+    }
+
+    //hash password
+    const salt = await bcrypt.genSaltSync(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashedPassword;
+    await user.save();
+
+    user.password = undefined;
+    res.status(200).json({
+      success: true,
+      message: "password reset successfully",
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "reset password api",
+      error,
+    });
+  }
+};
+
+// @desc delete user || DELETE /api/v1/user/deletePasswrod
 export const deleteUserControler = async (req, res) => {
   try {
     const user = await userModel.findByIdAndDelete({ _id: req.body.id });

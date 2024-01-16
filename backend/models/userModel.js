@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "https://cdn-icons-png.flaticon.com/128/64/64572.png",
     },
+    answer: {
+      type: String,
+      require: [true, "answer is required"],
+    },
   },
   {
     timestamps: true,
