@@ -4,6 +4,7 @@ import {
   getAllUsersController,
   getSingleUserController,
   resetPasswordController,
+  updatePasswordController,
   updateUserController,
 } from "../controllers/userControllers.js";
 import { authMiddleware } from "../middlewares/authMiddleware.js";
@@ -19,8 +20,11 @@ router.get("/getUser", authMiddleware, getSingleUserController);
 //update user
 router.put("/updateUser", authMiddleware, updateUserController);
 
+//updarte user password
+router.put("/updatePassword", authMiddleware, updatePasswordController);
+
 //reset user Passord
-router.put("/resetPassword", authMiddleware, resetPasswordController);
+router.post("/resetPassword", resetPasswordController);
 
 //delete user
 router.delete("/deleteUser", authMiddleware, deleteUserControler);

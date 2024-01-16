@@ -1,4 +1,5 @@
 import userModel from "../models/userModel.js";
+import bcrypt from "bcryptjs";
 
 // @desc get all users || GET /api/v1/user
 export const getAllUsersController = async (req, res) => {
@@ -94,7 +95,62 @@ export const updateUserController = async (req, res) => {
   }
 };
 
-//@desc reset user password  || put  /api/v1/user/resetPassword
+// @desc update user password || PUT /api/v1/user/updatePassword
+export const updatePasswordController = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  if (!oldPassword || !newPassword) {
+    return res.status(500).json({
+      success: false,
+      message: "please provide all required fields",
+    });
+  }
+
+  try {
+    //find user
+    const user = await userModel.findById({ _id: req.body.id });
+    // validate
+    if (!user) {
+      res.status(404).json({
+        success: false,
+        message: "user not found",
+      });
+    }
+
+    //get data from user
+    const { password } = user;
+
+    //compare old password
+    const isOldPasswordMatch = await bcrypt.compare(oldPassword, password);
+    if (!isOldPasswordMatch) {
+      return res.status(500).json({
+        success: false,
+        message: "Old password does not match please try correct password",
+      });
+    }
+
+    //hash new password
+    const salt = await bcrypt.genSaltSync(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    user.password = hashedPassword;
+    await user.save();
+
+    user.password = undefined;
+    res.status(200).json({
+      success: true,
+      message: "password updated successfully",
+      user,
+    });
+  } catch (error) {
+    console.log("Error in updating user password", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error in update password api",
+      error: error.message,
+    });
+  }
+};
+
+// @desc reset user password || POST /api/v1/user/resetPassword
 export const resetPasswordController = async (req, res) => {
   try {
     const { email, newPassword, answer } = req.body;
