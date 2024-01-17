@@ -193,7 +193,7 @@ export const resetPasswordController = async (req, res) => {
 // @desc delete user || DELETE /api/v1/user/deletePasswrod
 export const deleteUserControler = async (req, res) => {
   try {
-    const user = await userModel.findByIdAndDelete({ _id: req.body.id });
+    const user = await userModel.findByIdAndDelete(req.params.id);
     console.log("Deleted user", user);
     res.status(200).json({
       success: true,

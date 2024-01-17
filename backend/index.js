@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 
 import authRoutes from "./routes/authRoutes.js";
 import userRoute from "./routes/userRoute.js";
+import restaurantRoutes from "./routes/restaurantRoutes.js";
 import connectDB from "./config/db.js";
 
 //rest object
@@ -24,6 +25,7 @@ app.use(morgan("dev"));
 //routes
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/restaurant", restaurantRoutes);
 
 app.get("/", (req, res) => {
   res.send("server created");

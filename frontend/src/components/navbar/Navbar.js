@@ -6,11 +6,6 @@ const Navbar = () => {
   return (
     <div className="navbar-parent w-full p-2 bg-gray-100 fixed">
       <nav className="navbar flex justify-center">
-        {/* <div className="nav-logo">
-          <Link>
-            <img src="" alt="#" />
-          </Link>
-        </div> */}
         <div className="nav-links">
           <ul className="flex">
             <Link to="/register" className="link">
@@ -18,6 +13,9 @@ const Navbar = () => {
             </Link>
             <Link to="/login" className="link">
               <li>Login</li>
+            </Link>
+            <Link to="/" className="link">
+              <li>Home</li>
             </Link>
           </ul>
         </div>
