@@ -48,54 +48,59 @@ export const createResturantController = async (req, res) => {
 };
 
 // @desc get all resturants || GET /api/v1/resturant
-// export const getAllResturantsController = async (req, res) => {
-//   try {
-//     const resturants = await Resturant.find();
+export const getAllResturantsController = async (req, res) => {
+  try {
+    const resturants = await ResturantModel.find();
+    if (!resturants) {
+      return res.status(404).json({
+        success: false,
+        message: "Resturants Not Found",
+      });
+    }
 
-//     console.log("All resturants", resturants);
-//     res.status(200).json({
-//       success: true,
-//       message: "All resturants",
-//       resturants,
-//     });
-//   } catch (error) {
-//     console.log("Error in getting all resturants", error);
-//     res.status(500).json({
-//       success: false,
-//       message: "Internal Server Error",
-//       error: error.message,
-//     });
-//   }
-// };
+    console.log("All resturants", resturants);
+    res.status(200).json({
+      success: true,
+      message: "All resturants",
+      totalResturants: resturants.length,
+      resturants,
+    });
+  } catch (error) {
+    console.log("Error in getting all resturants", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error to get all resturant",
+      error: error.message,
+    });
+  }
+};
 
 // @desc get single resturant || GET /api/v1/resturant/:id
+export const getSingleResturantController = async (req, res) => {
+  try {
+    const resturant = await ResturantModel.findById({ _id: req.params.id });
+    if (!resturant) {
+      return res.status(404).json({
+        success: false,
+        message: "Resturant Not Found",
+      });
+    }
 
-// export const getSingleResturantController = async (req, res) => {
-//   try {
-//     const resturant = await Resturant.findById({ _id: req.params.id });
-
-//     if (!resturant) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Resturant Not Found",
-//       });
-//     }
-
-//     console.log("Single resturant", resturant);
-//     res.status(200).json({
-//       success: true,
-//       message: "Single resturant",
-//       resturant,
-//     });
-//   } catch (error) {
-//     console.log("Error in getting single resturant", error);
-//     res.status(500).json({
-//       success: false,
-//       message: "Internal Server Error no resturant found",
-//       error: error.message,
-//     });
-//   }
-// };
+    console.log("Single resturant", resturant);
+    res.status(200).json({
+      success: true,
+      message: "Single resturant",
+      resturant,
+    });
+  } catch (error) {
+    console.log("Error in getting single resturant", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error no resturant found",
+      error: error.message,
+    });
+  }
+};
 
 // @desc update resturant || PUT /api/v1/resturant/:id
 

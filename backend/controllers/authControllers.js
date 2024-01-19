@@ -15,8 +15,6 @@ export const registerController = async (req, res) => {
       });
     }
 
-    //hash password
-
     //check if user already exists
     const existingUser = await userModel.findOne({ email });
     if (existingUser) {
